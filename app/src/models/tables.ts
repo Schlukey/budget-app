@@ -1,18 +1,13 @@
 import { Base } from './base';
 
-export enum ColumnTypes {
-  Income,
-  Expense,
-}
-
 export interface ColumnDefinition {
-  columnType: ColumnTypes;
   header: string;
 }
 
-export interface TableData {
+export interface BudgetItem extends Base {
   date?: Date | string;
   title: string;
   description?: string;
   value: number;
 }
+

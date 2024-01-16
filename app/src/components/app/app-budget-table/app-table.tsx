@@ -16,23 +16,20 @@ import AppText from '../app-text/app-text';
 import { AppColors } from '../../../theme';
 import useRandomColor from '../../../hooks/useColor';
 import {
+  BudgetItem,
   ColumnDefinition,
-  ColumnTypes,
-  TableData,
 } from '../../../models/tables';
 
 export type AppTableProps = {
   header?: string;
-  columnType?: ColumnTypes;
   columns: ColumnDefinition[];
-  data: TableData[];
+  data: BudgetItem[];
   addRow?: boolean;
   removeRow?: boolean;
 };
 
 const AppTable: React.FC<AppTableProps> = ({
   header,
-  columnType,
   columns,
   data,
   addRow = false,
