@@ -25,7 +25,6 @@ const Header: React.FC<HeaderProps> = ({
       bgColor={AppColors.secondary}
       color={AppColors.appTextColor}
       p={4}
-      minH={'85px'}
       pos={'relative'}
     >
       <Flex

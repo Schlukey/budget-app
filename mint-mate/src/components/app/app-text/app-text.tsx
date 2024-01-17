@@ -5,7 +5,7 @@ type AppTextProps = {
   size?: string;
   weight?: string;
   decoration?: string;
-  children: any;
+  children?: any;
 } & TextProps;
 
 const AppText: React.FC<AppTextProps> = ({

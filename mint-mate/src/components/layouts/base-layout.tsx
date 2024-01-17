@@ -63,9 +63,10 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ back, add, children }) => {
       </Flex>
       <Flex
         direction={'column'}
-        h={'100%'}
+        minH={'10vh'}
         w={'full'}
         bgColor={AppColors.primary}
+        overflow={'scroll'}
       >
         <Header backButton={back} addButton={add} />
         {children}

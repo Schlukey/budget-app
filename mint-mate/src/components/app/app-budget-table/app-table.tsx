@@ -15,10 +15,7 @@ import AppButton from '../app-button/app-button';
 import AppText from '../app-text/app-text';
 import { AppColors } from '../../../theme';
 import useRandomColor from '../../../hooks/useColor';
-import {
-  BudgetItem,
-  ColumnDefinition,
-} from '../../../models/tables';
+import { BudgetItem, ColumnDefinition } from '../../../models/tables';
 
 export type AppTableProps = {
   header?: string;
@@ -36,7 +33,7 @@ const AppTable: React.FC<AppTableProps> = ({
   removeRow = false,
 }) => {
   return (
-    <Flex w={'full'} gap={3} direction={'column'} p={4}>
+    <Flex w={'full'} gap={3} direction={'column'} color={'white'}>
       <Flex
         w={'full'}
         display={!header ? 'none' : 'flex'}
@@ -48,18 +45,20 @@ const AppTable: React.FC<AppTableProps> = ({
       </Flex>
       <TableContainer>
         <Table variant={'simple'} w={'full'}>
-          <Thead>
-            {columns.map((x) => {
-              return <Tr>{x.header}</Tr>;
-            })}
+          <Thead w={'full'}>
+            <Tr>
+              {columns.map((x,i) => {
+                return <Td key={i}>{x.header}</Td>;
+              })}
+            </Tr>
           </Thead>
           <Tbody>
             {data.map((row, index) => {
               return (
                 <Tr key={index}>
-                  <Td>{row.date ? row.date.toString() : ''}</Td>
+                  {/* <Td>{row.date ? row.date.toString() : ''}</Td> */}
                   <Td>{row.title}</Td>
-                  <Td>{row.description ? row.description : ''}</Td>
+                  {/* <Td>{row.description ? row.description : ''}</Td> */}
                   <Td>{row.value}</Td>
                 </Tr>
               );
