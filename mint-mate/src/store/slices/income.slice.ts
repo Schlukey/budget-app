@@ -54,4 +54,3 @@ export const incomeSlice = createSlice({
 export const { addIcomeSource, removeIncomeSource, setIncome, resetIcome } =
   incomeSlice.actions;
 
-// export const selectTotalValue = (state: RootState) => state.
