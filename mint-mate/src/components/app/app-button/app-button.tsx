@@ -20,9 +20,10 @@ const AppButton: React.FC<AppButtonProps> = ({
       bg={bgColor}
       border={`1px solid ${AppColors.tertiary}`}
       _hover={{
-        transform: 'translateY(-2px)',
-        boxShadow: 'lg',
+        transform: 'translateY(-3px)',
+        boxShadow: `2px 2px 0px 0px ${AppColors.highlight} `,
       }}
+      color={AppColors.highlight}
       {...props}
     >
       {children}

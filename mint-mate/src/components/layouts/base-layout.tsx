@@ -21,9 +21,17 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ back, add, children }) => {
       href: '/',
     },
     {
-      label: 'New',
+      label: 'New Budget',
       href: '/create',
     },
+    {
+      label: 'Track',
+      href: '/track',
+    },
+    {
+      label: 'Generate Budget',
+      href: '/generate'
+    }
   ];
   const variant = useBreakpointValue({
     base: 'mobile',
@@ -63,9 +71,10 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ back, add, children }) => {
       </Flex>
       <Flex
         direction={'column'}
-        h={'100%'}
+        minH={'10vh'}
         w={'full'}
         bgColor={AppColors.primary}
+        overflow={'scroll'}
       >
         <Header backButton={back} addButton={add} />
         {children}
