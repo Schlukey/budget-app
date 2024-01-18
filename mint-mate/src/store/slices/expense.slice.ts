@@ -46,6 +46,10 @@ export const expenseSlice = createSlice({
       };
     },
     setTotalExpenseValue: (state, action: PayloadAction<number>) => {
+      let sum = 0;
+      state.expenses.forEach((x) => {
+        sum += x.value
+      })
       return {
         ...state,
         totalExpenseValue: action.payload,

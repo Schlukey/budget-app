@@ -28,7 +28,7 @@ const Create: React.FC = () => {
   const dispatch = useDispatch();
   const storeIncomes = useSelector(selectIncomes);
   const totalIncomeValue = useSelector(selectTotalIncome);
-  const totalExpenseValue = useSelector(selectTotalExpense)
+  const totalExpenseValue = useSelector(selectTotalExpense);
   const storeExpenses = useSelector(selectExpenses);
   const [totalIncome, setTotalIncome] = useState<number>(0);
   const [incomeName, setIncomeName] = useState<string>('');
@@ -62,7 +62,6 @@ const Create: React.FC = () => {
   };
 
   const removeIncomeItem = (item: BudgetItem) => {
-    console.log('item', item);
     dispatch(removeIncomeSource(item));
   };
 
@@ -90,10 +89,13 @@ const Create: React.FC = () => {
     getIncomeTotal();
     getExpenseTotal();
     const totalLeftOver = totalIncomeValue - totalExpenseValue;
+    console.log('total expense', totalExpenseValue);
+    console.log('total income', totalIncomeValue);
+    console.log('left over', leftOver);
     setLeftOver(totalLeftOver);
     dispatch(setTotalExpenseValue(totalExpense));
     dispatch(setTotalIncomeValue(totalIncome));
-  }, [storeIncomes, storeExpenses]);
+  }, [storeIncomes, storeExpenses, leftOver]);
 
   return (
     <BaseLayout add={false}>
@@ -194,7 +196,9 @@ const Create: React.FC = () => {
               </AppButton>
             </Flex>
             <AppTable
-              removeItem={(item: BudgetItem) => removeExpenseItem(item)}
+              removeItem={(item: BudgetItem) => {
+                removeExpenseItem(item);
+              }}
               columns={incomeColumns}
               data={storeExpenses || []}
               total={totalExpense}
