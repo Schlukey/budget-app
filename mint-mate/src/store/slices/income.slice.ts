@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BudgetItem } from '../../models/tables';
+import { RootState } from '../store';
 
 export interface IncomeState {
   incomes: BudgetItem[];
@@ -43,14 +44,21 @@ export const incomeSlice = createSlice({
       };
     },
     setTotalIncomeValue: (state, action: PayloadAction<number>) => {
+      let sum = 0;
+      state.incomes.forEach((x) => {
+        sum += x.value
+      });
       return {
         ...state,
-        totalIncomeValue: action.payload,
+        totalIncomeValue: sum,
       };
     },
   },
 });
 
-export const { addIcomeSource, removeIncomeSource, setIncome, resetIcome } =
+export const { addIcomeSource, removeIncomeSource, setIncome, resetIcome, setTotalIncomeValue } =
   incomeSlice.actions;
+
+export const selectIncomes = (state: RootState) => state.income.incomes;
+export const selectTotalIncome = (state: RootState) => state.income.totalIncomeValue;
 

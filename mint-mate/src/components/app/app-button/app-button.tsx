@@ -23,6 +23,7 @@ const AppButton: React.FC<AppButtonProps> = ({
         transform: 'translateY(-3px)',
         boxShadow: `2px 2px 0px 0px ${AppColors.highlight} `,
       }}
+      color={AppColors.highlight}
       {...props}
     >
       {children}

@@ -7,6 +7,8 @@ export enum RoutesList {
   Dashboard = '/',
   Budget = '/budget/:id',
   Create = '/create',
+  Track = '/track',
+  Generate = '/generate',
 }
 
 export const Router: React.FC = () => {

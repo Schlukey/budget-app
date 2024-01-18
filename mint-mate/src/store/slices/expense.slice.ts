@@ -1,13 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BudgetItem } from '../../models/tables';
+import { RootState } from '../store';
 
 export interface ExpenseState {
   expenses: BudgetItem[];
+  expense: BudgetItem | null;
   totalExpenseValue: number;
 }
 
 const initialState: ExpenseState = {
   expenses: [],
+  expense: null,
   totalExpenseValue: 0,
 };
 
@@ -58,3 +61,8 @@ export const {
   setTotalExpenseValue,
   resetExpense,
 } = expenseSlice.actions;
+
+export const selectTotalExpense = (state: RootState) =>
+  state.expense.totalExpenseValue;
+export const selectExpense = (state: RootState) => state.expense.expense;
+export const selectExpenses = (state: RootState) => state.expense.expenses;

@@ -1,36 +1,99 @@
 import React, { useState, useEffect } from 'react';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Input } from '@chakra-ui/react';
 import BaseLayout from '../../components/layouts/base-layout';
 import AppButton from '../../components/app/app-button/app-button';
 import AppText from '../../components/app/app-text/app-text';
 import { AppColors } from '../../theme';
 import { BudgetItem } from '../../models/tables';
-import AppInput from '../../components/app/app-input/app-input';
 import AppTable from '../../components/app/app-budget-table/app-table';
 import { incomeColumns } from '../../components/table-columns/columns';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addIcomeSource,
+  removeIncomeSource,
+  selectIncomes,
+  selectTotalIncome,
+  setTotalIncomeValue,
+} from '../../store/slices/income.slice';
+import { v4 as uuidv4 } from 'uuid';
+import {
+  addExpenseSource,
+  removeExpenseSource,
+  selectExpenses,
+  selectTotalExpense,
+  setTotalExpenseValue,
+} from '../../store/slices/expense.slice';
 
 const Create: React.FC = () => {
-  const [currentIcomes, setCurrentIncomes] = useState<BudgetItem[]>([]);
-  const [name, setName] = useState<string>('');
-  const [itemValue, setItemValue] = useState<number>(0);
-  const [currentExpenses, setCurrentExpenses] = useState<BudgetItem[]>([]);
-  const incomes: BudgetItem[] = [];
-  const expenses: BudgetItem[] = [];
+  const dispatch = useDispatch();
+  const storeIncomes = useSelector(selectIncomes);
+  const totalIncomeValue = useSelector(selectTotalIncome);
+  const totalExpenseValue = useSelector(selectTotalExpense)
+  const storeExpenses = useSelector(selectExpenses);
+  const [totalIncome, setTotalIncome] = useState<number>(0);
+  const [incomeName, setIncomeName] = useState<string>('');
+  const [incomeValue, setIncomeValue] = useState<number>();
 
-  const handleIncomeAdd = (name: string, value: number) => {
+  const [totalExpense, setTotalExpense] = useState<number>(0);
+  const [expenseItem, setExpenseItem] = useState<string>('');
+  const [expenseValue, setExpenseValue] = useState<number>(0);
+
+  const [leftOver, setLeftOver] = useState<number>(0);
+
+  const handleIncomeAdd = (name: string, value: number | undefined) => {
     const newIncome: BudgetItem = {
       title: name ?? 'check name',
-      value: itemValue ?? 0,
+      value: value ?? 0,
+      dateCreated: new Date(),
+      id: uuidv4(),
     };
-    console.log('test item', newIncome);
-    // incomes.push(newIncome);
-    // setCurrentIncomes(incomes);
+
+    dispatch(addIcomeSource(newIncome));
+  };
+
+  const handleExpenseAdd = (name: string, value: number | undefined) => {
+    const newExpense: BudgetItem = {
+      title: name ?? 'check name',
+      value: value ?? 0,
+      dateCreated: new Date(),
+      id: uuidv4(),
+    };
+    dispatch(addExpenseSource(newExpense));
+  };
+
+  const removeIncomeItem = (item: BudgetItem) => {
+    console.log('item', item);
+    dispatch(removeIncomeSource(item));
+  };
+
+  const removeExpenseItem = (item: BudgetItem) => {
+    dispatch(removeExpenseSource(item));
+  };
+
+  const getIncomeTotal = () => {
+    let sum = 0;
+    storeIncomes.forEach((x) => {
+      sum += x.value;
+    });
+    setTotalIncome(sum);
+  };
+
+  const getExpenseTotal = () => {
+    let sum = 0;
+    storeExpenses.forEach((x) => {
+      sum += x.value;
+    });
+    setTotalExpense(sum);
   };
 
   useEffect(() => {
-    setCurrentIncomes(incomes);
-    setCurrentExpenses(expenses);
-  }, []);
+    getIncomeTotal();
+    getExpenseTotal();
+    const totalLeftOver = totalIncomeValue - totalExpenseValue;
+    setLeftOver(totalLeftOver);
+    dispatch(setTotalExpenseValue(totalExpense));
+    dispatch(setTotalIncomeValue(totalIncome));
+  }, [storeIncomes, storeExpenses]);
 
   return (
     <BaseLayout add={false}>
@@ -44,67 +107,118 @@ const Create: React.FC = () => {
           p={6}
         >
           <AppText fontWeight={'600'} fontSize={'x-large'}>
-            Title
+            New Budget
           </AppText>
           <Flex direction={'column'} gap={4} w={'full'} minH={'450px'}>
             <Flex w={'full'} gap={3} align={'end'}>
-              <AppInput
+              <Input
+                border={`1px solid ${AppColors.highlight}`}
+                borderRadius={0}
                 id='income-name'
-                label='Name'
+                color={'white'}
                 name='source'
-                inputType='text'
-                value={'name'}
+                type='text'
+                value={incomeName}
                 placeholder='Name'
                 onChange={(e) => {
-                  // e.preventDefault();
-                  setName(e.target.value);
-                  console.log(name);
+                  e.preventDefault();
+                  setIncomeName(e.target.value);
                 }}
               />
-              <AppInput
+              <Input
+                border={`1px solid ${AppColors.highlight}`}
+                borderRadius={0}
+                color={'white'}
                 id='income-value'
-                label='Value'
-                value={'itemValue'}
+                value={incomeValue}
                 name='source'
-                inputType='number'
+                type='number'
                 placeholder='0'
                 onChange={(e) => {
-                  setItemValue(+e.target.value);
+                  e.preventDefault();
+                  setIncomeValue(+e.target.value);
                 }}
               />
               <AppButton
                 color={AppColors.highlight}
-                onClick={() => handleIncomeAdd(name, itemValue)}
+                onClick={() => handleIncomeAdd(incomeName, incomeValue)}
               >
                 +
               </AppButton>
             </Flex>
-            <AppTable columns={incomeColumns} data={currentIcomes || []} />
+            <Flex overflow={'scroll'} h={'200px'}>
+              <AppTable
+                total={totalIncome}
+                removeItem={(item: BudgetItem) => {
+                  removeIncomeItem(item);
+                }}
+                columns={incomeColumns}
+                data={storeIncomes || []}
+              />
+            </Flex>
           </Flex>
 
           <Flex direction={'column'} gap={4} w={'full'} minH={'450px'}>
             <Flex w={'full'} gap={3} align={'end'}>
-              <AppInput
+              <Input
+                border={`1px solid ${AppColors.highlight}`}
+                borderRadius={0}
+                color={'white'}
                 id='income-name'
-                label='Name'
+                type='text'
                 name='source'
-                inputType='text'
                 placeholder='Name'
+                onChange={(e) => {
+                  e.preventDefault();
+                  setExpenseItem(e.target.value);
+                }}
               />
-              <AppInput
+              <Input
+                border={`1px solid ${AppColors.highlight}`}
+                borderRadius={0}
+                color={'white'}
                 id='income-value'
-                label='Value'
                 name='source'
-                inputType='text'
+                type='text'
                 placeholder='0'
+                onChange={(e) => {
+                  e.preventDefault();
+                  setExpenseValue(+e.target.value);
+                }}
               />
-              <AppButton color={AppColors.highlight}>+</AppButton>
+              <AppButton
+                color={AppColors.highlight}
+                onClick={() => handleExpenseAdd(expenseItem, expenseValue)}
+              >
+                +
+              </AppButton>
             </Flex>
-            <AppTable columns={incomeColumns} data={currentIcomes || []} />
+            <AppTable
+              removeItem={(item: BudgetItem) => removeExpenseItem(item)}
+              columns={incomeColumns}
+              data={storeExpenses || []}
+              total={totalExpense}
+            />
           </Flex>
         </Flex>
-        <Flex w={'full'}>
-          <AppText>Graphs and stuff go here</AppText>
+        <Flex
+          w={'full'}
+          direction={'column'}
+          align={'start'}
+          justify={'start'}
+          gap={4}
+          p={6}
+        >
+          <AppText fontSize={'x-large'} fontWeight={'600'}>
+            Money Left Over:
+          </AppText>
+          <AppText
+            fontWeight={'bold'}
+            fontSize={'medium'}
+            color={AppColors.highlight}
+          >
+            R {leftOver}
+          </AppText>
         </Flex>
       </Flex>
     </BaseLayout>

@@ -21,9 +21,17 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ back, add, children }) => {
       href: '/',
     },
     {
-      label: 'New',
+      label: 'New Budget',
       href: '/create',
     },
+    {
+      label: 'Track',
+      href: '/track',
+    },
+    {
+      label: 'Generate Budget',
+      href: '/generate'
+    }
   ];
   const variant = useBreakpointValue({
     base: 'mobile',

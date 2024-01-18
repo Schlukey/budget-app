@@ -3,34 +3,31 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
-  Th,
   Td,
-  TableCaption,
   TableContainer,
   Flex,
+  Tfoot,
 } from '@chakra-ui/react';
-import AppButton from '../app-button/app-button';
 import AppText from '../app-text/app-text';
-import { AppColors } from '../../../theme';
-import useRandomColor from '../../../hooks/useColor';
 import { BudgetItem, ColumnDefinition } from '../../../models/tables';
+import { AppColors } from '../../../theme';
+import AppButton from '../app-button/app-button';
 
 export type AppTableProps = {
   header?: string;
   columns: ColumnDefinition[];
+  total: number;
   data: BudgetItem[];
-  addRow?: boolean;
-  removeRow?: boolean;
+  removeItem: (item: BudgetItem) => void;
 };
 
 const AppTable: React.FC<AppTableProps> = ({
   header,
   columns,
+  total = 0,
   data,
-  addRow = false,
-  removeRow = false,
+  removeItem,
 }) => {
   return (
     <Flex w={'full'} gap={3} direction={'column'} color={'white'}>
@@ -43,11 +40,11 @@ const AppTable: React.FC<AppTableProps> = ({
           {header}
         </AppText>
       </Flex>
-      <TableContainer>
+      <TableContainer w={'full'}>
         <Table variant={'simple'} w={'full'}>
           <Thead w={'full'}>
             <Tr>
-              {columns.map((x,i) => {
+              {columns.map((x, i) => {
                 return <Td key={i}>{x.header}</Td>;
               })}
             </Tr>
@@ -56,14 +53,37 @@ const AppTable: React.FC<AppTableProps> = ({
             {data.map((row, index) => {
               return (
                 <Tr key={index}>
-                  {/* <Td>{row.date ? row.date.toString() : ''}</Td> */}
+                  <Td>{row.dateCreated.toString().slice(0,10)}</Td>
                   <Td>{row.title}</Td>
-                  {/* <Td>{row.description ? row.description : ''}</Td> */}
                   <Td>{row.value}</Td>
+                  <Td
+                    maxW={'20px'}
+                    display={'flex'}
+                    alignItems={'center'}
+                    justifyItems={'center'}
+                  >
+                    <AppButton
+                      size={'xs'}
+                      borderRadius={'full'}
+                      onClick={() => removeItem(row)}
+                    >
+                      -
+                    </AppButton>
+                  </Td>
                 </Tr>
               );
             })}
           </Tbody>
+          <Tfoot>
+            <Tr>
+              <Td color={AppColors.highlight} fontWeight={'bold'}>
+                Total
+              </Td>
+              <Td color={AppColors.highlight} fontWeight={'bold'}>
+                R{total}
+              </Td>
+            </Tr>
+          </Tfoot>
         </Table>
       </TableContainer>
     </Flex>
