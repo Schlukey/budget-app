@@ -10,13 +10,15 @@ import {
   Tfoot,
 } from '@chakra-ui/react';
 import AppText from '../app-text/app-text';
-import { BudgetItem, ColumnDefinition } from '../../../models/tables';
+import { ColumnDefinition } from '../../../models/tables';
+import { BudgetItem } from '../../../models/budget';
 import { AppColors } from '../../../theme';
 import AppButton from '../app-button/app-button';
 
 export type AppTableProps = {
   header?: string;
   columns: ColumnDefinition[];
+  remove?: boolean;
   total: number;
   data: BudgetItem[];
   removeItem: (item: BudgetItem) => void;
@@ -26,6 +28,7 @@ const AppTable: React.FC<AppTableProps> = ({
   header,
   columns,
   total = 0,
+  remove = true,
   data,
   removeItem,
 }) => {
@@ -53,23 +56,25 @@ const AppTable: React.FC<AppTableProps> = ({
             {data.map((row, index) => {
               return (
                 <Tr key={index}>
-                  <Td>{row.dateCreated.toString().slice(0,10)}</Td>
+                  <Td>{row.dateCreated.toString().slice(0, 10)}</Td>
                   <Td>{row.title}</Td>
                   <Td>{row.value}</Td>
-                  <Td
-                    maxW={'20px'}
-                    display={'flex'}
-                    alignItems={'center'}
-                    justifyItems={'center'}
-                  >
-                    <AppButton
-                      size={'xs'}
-                      borderRadius={'full'}
-                      onClick={() => removeItem(row)}
+                  {remove && (
+                    <Td
+                      maxW={'20px'}
+                      display={'flex'}
+                      alignItems={'center'}
+                      justifyItems={'center'}
                     >
-                      -
-                    </AppButton>
-                  </Td>
+                      <AppButton
+                        size={'xs'}
+                        borderRadius={'full'}
+                        onClick={() => removeItem(row)}
+                      >
+                        -
+                      </AppButton>
+                    </Td>
+                  )}
                 </Tr>
               );
             })}

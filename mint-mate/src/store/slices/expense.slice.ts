@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BudgetItem } from '../../models/tables';
+import { BudgetItem } from '../../models/budget';
 import { RootState } from '../store';
 
 export interface ExpenseState {
@@ -28,7 +28,6 @@ export const expenseSlice = createSlice({
       const copyExpenses: BudgetItem[] = state.expenses.filter((expense) => {
         return expense.id !== action.payload.id;
       });
-      console.log('item in store', action.payload)
       return {
         ...state,
         expenses: copyExpenses,
@@ -47,10 +46,6 @@ export const expenseSlice = createSlice({
       };
     },
     setTotalExpenseValue: (state, action: PayloadAction<number>) => {
-      let sum = 0;
-      state.expenses.forEach((x) => {
-        sum += x.value
-      })
       return {
         ...state,
         totalExpenseValue: action.payload,

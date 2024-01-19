@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BudgetItem } from '../../models/tables';
+import { BudgetItem } from '../../models/budget';
 import { RootState } from '../store';
 
 export interface IncomeState {

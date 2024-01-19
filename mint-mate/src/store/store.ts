@@ -13,6 +13,7 @@ import {
 import storage from 'redux-persist/es/storage';
 import { incomeSlice } from './slices/income.slice';
 import { expenseSlice } from './slices/expense.slice';
+import { budgetSlice } from './slices/budget.slice';
 
 const incomeSlicePersistReducer = persistReducer(
   {
@@ -30,10 +31,19 @@ const expenseSlicePersistedReducer = persistReducer(
   expenseSlice.reducer
 );
 
+const budgetSlicePersistedReducer = persistReducer(
+  {
+    key: 'budget',
+    storage,
+  },
+  budgetSlice.reducer
+);
+
 export const store = configureStore({
   reducer: {
     income: incomeSlicePersistReducer,
     expense: expenseSlicePersistedReducer,
+    budget: budgetSlicePersistedReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
