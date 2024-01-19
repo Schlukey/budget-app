@@ -5,11 +5,13 @@ import { RootState } from '../store';
 export interface IncomeState {
   incomes: BudgetItem[];
   totalIncomeValue: number;
+  salary: number;
 }
 
 const initialState: IncomeState = {
   incomes: [],
   totalIncomeValue: 0,
+  salary: 0,
 };
 
 export const incomeSlice = createSlice({
@@ -31,6 +33,12 @@ export const incomeSlice = createSlice({
         incomes: copyIncomes,
       };
     },
+    setSalary: (state, action: PayloadAction<number>) => {
+      return {
+        ...state,
+        salary: action.payload,
+      };
+    },
     setIncome: (state, action: PayloadAction<BudgetItem[]>) => {
       return {
         ...state,
@@ -46,7 +54,7 @@ export const incomeSlice = createSlice({
     setTotalIncomeValue: (state, action: PayloadAction<number>) => {
       let sum = 0;
       state.incomes.forEach((x) => {
-        sum += x.value
+        sum += x.value;
       });
       return {
         ...state,
@@ -56,9 +64,16 @@ export const incomeSlice = createSlice({
   },
 });
 
-export const { addIcomeSource, removeIncomeSource, setIncome, resetIcome, setTotalIncomeValue } =
-  incomeSlice.actions;
+export const {
+  addIcomeSource,
+  removeIncomeSource,
+  setIncome,
+  resetIcome,
+  setTotalIncomeValue,
+  setSalary,
+} = incomeSlice.actions;
 
 export const selectIncomes = (state: RootState) => state.income.incomes;
-export const selectTotalIncome = (state: RootState) => state.income.totalIncomeValue;
-
+export const selectTotalIncome = (state: RootState) =>
+  state.income.totalIncomeValue;
+export const selectSalary = (state: RootState) => state.income.salary;

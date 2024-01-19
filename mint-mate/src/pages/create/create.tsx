@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   addIcomeSource,
   removeIncomeSource,
-  resetIcome,
   selectIncomes,
   selectTotalIncome,
   setTotalIncomeValue,
@@ -20,7 +19,6 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   addExpenseSource,
   removeExpenseSource,
-  resetExpense,
   selectExpenses,
   selectTotalExpense,
   setTotalExpenseValue,
@@ -122,7 +120,6 @@ const Create: React.FC = () => {
             <Flex gap={3} align={'center'}>
               <Input
                 border={`1px solid ${AppColors.highlight}`}
-                // w={'50%'}
                 borderRadius={0}
                 name='title'
                 value={budgetTitle}

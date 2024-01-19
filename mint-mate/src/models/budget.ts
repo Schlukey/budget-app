@@ -23,3 +23,8 @@ export interface BudgetItem extends Base {
   description?: string;
   value: number;
 }
+
+export interface Presets {
+  name: string;
+  value: number;
+}
