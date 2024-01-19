@@ -86,14 +86,13 @@ const Create: React.FC = () => {
   };
 
   useEffect(() => {
-    getIncomeTotal();
-    getExpenseTotal();
-    const totalLeftOver = totalIncome - totalExpense;
-    setLeftOver(totalLeftOver);
     dispatch(setTotalExpenseValue(totalExpense));
     dispatch(setTotalIncomeValue(totalIncome));
+    getIncomeTotal();
+    getExpenseTotal();
+    const totalLeftOver = totalIncomeValue - totalExpenseValue;
+    setLeftOver(totalLeftOver);
   }, [storeIncomes, storeExpenses, leftOver]);
-
 
   return (
     <BaseLayout add={false}>
@@ -146,16 +145,14 @@ const Create: React.FC = () => {
                 +
               </AppButton>
             </Flex>
-            <Flex overflow={'scroll'} h={'200px'}>
-              <AppTable
-                total={totalIncome}
-                removeItem={(item: BudgetItem) => {
-                  removeIncomeItem(item);
-                }}
-                columns={incomeColumns}
-                data={storeIncomes || []}
-              />
-            </Flex>
+            <AppTable
+              total={totalIncome}
+              removeItem={(item: BudgetItem) => {
+                removeIncomeItem(item);
+              }}
+              columns={incomeColumns}
+              data={storeIncomes || []}
+            />
           </Flex>
 
           <Flex direction={'column'} gap={4} w={'full'} minH={'450px'}>
@@ -195,7 +192,7 @@ const Create: React.FC = () => {
             </Flex>
             <AppTable
               removeItem={(item: BudgetItem) => {
-                removeExpenseItem(item)
+                removeExpenseItem(item);
               }}
               columns={incomeColumns}
               data={storeExpenses || []}

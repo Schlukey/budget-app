@@ -79,6 +79,7 @@ const AppTable: React.FC<AppTableProps> = ({
               <Td color={AppColors.highlight} fontWeight={'bold'}>
                 Total
               </Td>
+              <Td></Td>
               <Td color={AppColors.highlight} fontWeight={'bold'}>
                 R{total}
               </Td>
