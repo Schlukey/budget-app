@@ -28,9 +28,10 @@ export const expenseSlice = createSlice({
       const copyExpenses: BudgetItem[] = state.expenses.filter((expense) => {
         return expense.id !== action.payload.id;
       });
+      console.log('item in store', action.payload)
       return {
         ...state,
-        incomes: copyExpenses,
+        expenses: copyExpenses,
       };
     },
     setExpense: (state, action: PayloadAction<BudgetItem[]>) => {

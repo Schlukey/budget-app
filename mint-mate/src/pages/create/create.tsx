@@ -88,14 +88,12 @@ const Create: React.FC = () => {
   useEffect(() => {
     getIncomeTotal();
     getExpenseTotal();
-    const totalLeftOver = totalIncomeValue - totalExpenseValue;
-    console.log('total expense', totalExpenseValue);
-    console.log('total income', totalIncomeValue);
-    console.log('left over', leftOver);
+    const totalLeftOver = totalIncome - totalExpense;
     setLeftOver(totalLeftOver);
     dispatch(setTotalExpenseValue(totalExpense));
     dispatch(setTotalIncomeValue(totalIncome));
   }, [storeIncomes, storeExpenses, leftOver]);
+
 
   return (
     <BaseLayout add={false}>
@@ -197,7 +195,7 @@ const Create: React.FC = () => {
             </Flex>
             <AppTable
               removeItem={(item: BudgetItem) => {
-                removeExpenseItem(item);
+                removeExpenseItem(item)
               }}
               columns={incomeColumns}
               data={storeExpenses || []}
