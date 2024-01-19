@@ -4,7 +4,7 @@ import BaseLayout from '../../components/layouts/base-layout';
 import AppButton from '../../components/app/app-button/app-button';
 import AppText from '../../components/app/app-text/app-text';
 import { AppColors } from '../../theme';
-import { BudgetItem } from '../../models/tables';
+import { BudgetItem } from '../../models/budget';
 import AppTable from '../../components/app/app-budget-table/app-table';
 import { incomeColumns } from '../../components/table-columns/columns';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +23,8 @@ import {
   selectTotalExpense,
   setTotalExpenseValue,
 } from '../../store/slices/expense.slice';
+import { Budget } from '../../models/budget';
+import { createBudget } from '../../store/slices/budget.slice';
 
 const Create: React.FC = () => {
   const dispatch = useDispatch();
@@ -30,6 +32,8 @@ const Create: React.FC = () => {
   const totalIncomeValue = useSelector(selectTotalIncome);
   const totalExpenseValue = useSelector(selectTotalExpense);
   const storeExpenses = useSelector(selectExpenses);
+
+  const [budgetTitle, setBudgetTitle] = useState<string>();
   const [totalIncome, setTotalIncome] = useState<number>(0);
   const [incomeName, setIncomeName] = useState<string>('');
   const [incomeValue, setIncomeValue] = useState<number>();
@@ -47,7 +51,6 @@ const Create: React.FC = () => {
       dateCreated: new Date(),
       id: uuidv4(),
     };
-
     dispatch(addIcomeSource(newIncome));
   };
 
@@ -85,6 +88,18 @@ const Create: React.FC = () => {
     setTotalExpense(sum);
   };
 
+  const handleBudgetSave = () => {
+    const newBudget: Budget = {
+      id: uuidv4(),
+      title: budgetTitle ?? 'check title',
+      dateCreated: new Date(),
+      incomes: storeIncomes,
+      expenses: storeExpenses,
+      totalValue: leftOver,
+    };
+    dispatch(createBudget(newBudget));
+  };
+
   useEffect(() => {
     dispatch(setTotalExpenseValue(totalExpense));
     dispatch(setTotalIncomeValue(totalIncome));
@@ -97,18 +112,35 @@ const Create: React.FC = () => {
   return (
     <BaseLayout add={false}>
       <Flex w={'full'} p={4} gap={4}>
-        <Flex
-          w={'full'}
-          direction={'column'}
-          align={'start'}
-          justify={'center'}
-          gap={4}
-          p={6}
-        >
-          <AppText fontWeight={'600'} fontSize={'x-large'}>
-            New Budget
-          </AppText>
-          <Flex direction={'column'} gap={4} w={'full'} minH={'450px'}>
+        <Flex w={'full'} direction={'column'} align={'start'} gap={4} p={6}>
+          <Flex w={'full'} justify={'space-between'} align={'center'}>
+            <AppText fontWeight={'600'} fontSize={'x-large'}>
+              New Budget
+            </AppText>
+            <Flex gap={3} align={'center'}>
+              <Input
+                border={`1px solid ${AppColors.highlight}`}
+                borderRadius={0}
+                name='title'
+                value={budgetTitle}
+                color={'white'}
+                placeholder='Budget Title'
+                onChange={(e) => {
+                  e.preventDefault();
+                  setBudgetTitle(e.target.value);
+                }}
+              />
+              <AppButton onClick={() => {}}>Save</AppButton>
+            </Flex>
+          </Flex>
+          <Flex direction={'column'} gap={4} w={'full'} minH={'200px'} pb={6}>
+            <AppText
+              fontWeight={'600'}
+              size={'large'}
+              color={AppColors.highlight}
+            >
+              Income
+            </AppText>
             <Flex w={'full'} gap={3} align={'end'}>
               <Input
                 border={`1px solid ${AppColors.highlight}`}
@@ -156,6 +188,13 @@ const Create: React.FC = () => {
           </Flex>
 
           <Flex direction={'column'} gap={4} w={'full'} minH={'450px'}>
+            <AppText
+              fontWeight={'600'}
+              size={'large'}
+              color={AppColors.highlight}
+            >
+              Expenses
+            </AppText>
             <Flex w={'full'} gap={3} align={'end'}>
               <Input
                 border={`1px solid ${AppColors.highlight}`}
@@ -199,6 +238,7 @@ const Create: React.FC = () => {
               total={totalExpense}
             />
           </Flex>
+          <AppButton onClick={() => handleBudgetSave()}>Save Budget</AppButton>
         </Flex>
         <Flex
           w={'full'}
