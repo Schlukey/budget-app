@@ -33,7 +33,7 @@ const AppTable: React.FC<AppTableProps> = ({
   removeItem,
 }) => {
   return (
-    <Flex w={'full'} gap={3} direction={'column'} color={'white'}>
+    <Flex w={'100%'} gap={3} direction={'column'} color={'white'}>
       <Flex
         w={'full'}
         display={!header ? 'none' : 'flex'}

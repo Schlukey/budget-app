@@ -7,7 +7,7 @@ import Generate from '../pages/generate/generate';
 
 export enum RoutesList {
   Dashboard = '/',
-  Budget = '/budget/:id',
+  Budget = '/budget',
   Create = '/create',
   Track = '/track',
   Generate = '/generate',
