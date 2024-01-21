@@ -1,6 +1,6 @@
 import { ColumnDefinition } from '../../models/tables';
 
-export const incomeColumns: ColumnDefinition[] = [
+export const budgetColumns: ColumnDefinition[] = [
   {
     header: 'Date',
   },

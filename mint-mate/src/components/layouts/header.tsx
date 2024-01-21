@@ -1,11 +1,21 @@
-import { Flex, Image } from '@chakra-ui/react';
+import {
+  Drawer,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
+  Flex,
+  Image,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import { AppColors } from '../../theme';
 import AppText from '../app/app-text/app-text';
 import outlineLogo from '../assets/outline-logo.svg';
 import React from 'react';
-import { AddIcon, ArrowBackIcon } from '@chakra-ui/icons';
+import { AddIcon, ArrowBackIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { RoutesList } from '../../router/router';
+import { usePanel } from '../../providers/service';
+import { navLinks } from '../../constants/links';
 
 interface HeaderProps {
   backButton?: boolean;
@@ -17,6 +27,43 @@ const Header: React.FC<HeaderProps> = ({
   addButton = true,
 }) => {
   const navigate = useNavigate();
+  const panel = usePanel();
+
+  const variant = useBreakpointValue({
+    base: 'mobile',
+    lg: 'desktop',
+  });
+
+  const handleMenu = () => {
+    panel({
+      title: 'Pages',
+      size: 'lg',
+      render: (onSubmit) => {
+        return (
+          <Flex w={'full'} gap={3} direction={'column'}>
+            {navLinks.map((x) => {
+              return (
+                <AppText
+                  _hover={{
+                    color: AppColors.highlight,
+                    translate: 'transformY(-3px)',
+                  }}
+                  fontWeight={'bold'}
+                  onClick={() => {
+                    navigate(x.href);
+                    onSubmit();
+                  }}
+                >
+                  {x.label}
+                </AppText>
+              );
+            })}
+          </Flex>
+        );
+      },
+    });
+  };
+
   return (
     <Flex
       direction={'row'}
@@ -27,19 +74,35 @@ const Header: React.FC<HeaderProps> = ({
       p={4}
       pos={'relative'}
     >
-      <Flex
-        display={backButton ? 'flex' : 'none'}
-        p={2}
-        bg='transparent'
-        align={'center'}
-        justify={'center'}
-        pos={'absolute'}
-        top={{ base: 3, lg: 12 }}
-        left={6}
-        onClick={() => navigate(RoutesList.Dashboard)}
-      >
-        <ArrowBackIcon color={AppColors.highlight} w={'25px'} h={'25px'} />
-      </Flex>
+      {variant === 'desktop' ? (
+        <Flex
+          display={backButton ? 'flex' : 'none'}
+          p={2}
+          bg='transparent'
+          align={'center'}
+          justify={'center'}
+          pos={'absolute'}
+          top={12}
+          left={6}
+          onClick={() => navigate(RoutesList.Dashboard)}
+        >
+          <ArrowBackIcon color={AppColors.highlight} w={'25px'} h={'25px'} />
+        </Flex>
+      ) : (
+        <Flex
+          display={backButton ? 'flex' : 'none'}
+          p={2}
+          bg='transparent'
+          align={'center'}
+          justify={'center'}
+          pos={'absolute'}
+          top={12}
+          left={6}
+          onClick={() => handleMenu()}
+        >
+          <HamburgerIcon color={AppColors.highlight} w={'25px'} h={'25px'} />
+        </Flex>
+      )}
       <Flex direction={'column'} align={'center'}>
         <Image src={outlineLogo} maxW={'65px'} />
         <AppText
@@ -57,7 +120,7 @@ const Header: React.FC<HeaderProps> = ({
         align={'center'}
         justify={'center'}
         pos={'absolute'}
-        top={{ base: 3, lg: 12 }}
+        top={12}
         right={6}
         onClick={() => navigate(RoutesList.Create)}
       >

@@ -6,7 +6,7 @@ import { selectBudget } from '../../store/slices/budget.slice';
 import AppText from '../../components/app/app-text/app-text';
 import { AppColors } from '../../theme';
 import AppTable from '../../components/app/app-budget-table/app-table';
-import { incomeColumns } from '../../components/table-columns/columns';
+import { budgetColumns } from '../../components/table-columns/columns';
 
 const Budget: React.FC = () => {
   const budget = useSelector(selectBudget);
@@ -38,7 +38,7 @@ const Budget: React.FC = () => {
               Incomes
             </AppText>
             <AppTable
-              columns={incomeColumns}
+              columns={budgetColumns}
               data={budget?.incomes || []}
               removeItem={() => {}}
               total={totalIncome}
@@ -50,7 +50,7 @@ const Budget: React.FC = () => {
               Expenses
             </AppText>
             <AppTable
-              columns={incomeColumns}
+              columns={budgetColumns}
               data={budget?.expenses || []}
               removeItem={() => {}}
               total={totalExpense}

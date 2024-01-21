@@ -6,7 +6,7 @@ import AppText from '../../components/app/app-text/app-text';
 import { AppColors } from '../../theme';
 import { BudgetItem } from '../../models/budget';
 import AppTable from '../../components/app/app-budget-table/app-table';
-import { incomeColumns } from '../../components/table-columns/columns';
+import { budgetColumns } from '../../components/table-columns/columns';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addIcomeSource,
@@ -95,7 +95,7 @@ const Create: React.FC = () => {
       dateCreated: new Date(),
       incomes: storeIncomes,
       expenses: storeExpenses,
-      totalValue: leftOver,
+      value: leftOver,
     };
     dispatch(createBudget(newBudget));
   };
@@ -111,10 +111,15 @@ const Create: React.FC = () => {
 
   return (
     <BaseLayout add={false}>
-      <Flex w={'full'} p={4} gap={4}>
-        <Flex w={'full'} direction={'column'} align={'start'} gap={4} p={6}>
-          <Flex w={'full'} justify={'space-between'} align={'center'}>
-            <AppText fontWeight={'600'} fontSize={'x-large'}>
+      <Flex w={'full'} p={4} gap={4} direction={{base: 'column', lg: 'row'}}>
+        <Flex w={'full'} direction={'column'} align={'start'} gap={4} p={{base: 0, lg: 4}}>
+          <Flex
+            w={'full'}
+            direction={{ base: 'column', lg: 'row' }}
+            justify={'space-between'}
+            align={{ base: 'center', lg: 'start' }}
+          >
+            <AppText fontWeight={'600'} fontSize={'x-large'} pb={{base: '15pxb'}}>
               New Budget
             </AppText>
             <Flex gap={3} align={'center'}>
@@ -182,12 +187,12 @@ const Create: React.FC = () => {
               removeItem={(item: BudgetItem) => {
                 removeIncomeItem(item);
               }}
-              columns={incomeColumns}
+              columns={budgetColumns}
               data={storeIncomes || []}
             />
           </Flex>
 
-          <Flex direction={'column'} gap={4} w={'full'} minH={'450px'}>
+          <Flex direction={'column'} gap={4} w={'full'} minH={'200px'}>
             <AppText
               fontWeight={'600'}
               size={'large'}
@@ -233,7 +238,7 @@ const Create: React.FC = () => {
               removeItem={(item: BudgetItem) => {
                 removeExpenseItem(item);
               }}
-              columns={incomeColumns}
+              columns={budgetColumns}
               data={storeExpenses || []}
               total={totalExpense}
             />

@@ -6,6 +6,7 @@ import AppText from '../app/app-text/app-text';
 import Header from './header';
 import { RoutesList } from '../../router/router';
 import { useNavigate } from 'react-router-dom';
+import { navLinks } from '../../constants/links';
 
 type BaseLayoutProps = {
   children?: ReactNode;
@@ -15,31 +16,14 @@ type BaseLayoutProps = {
 
 const BaseLayout: React.FC<BaseLayoutProps> = ({ back, add, children }) => {
   const navigate = useNavigate();
-  const navLinks = [
-    {
-      label: 'Home',
-      href: '/',
-    },
-    {
-      label: 'New Budget',
-      href: '/create',
-    },
-    {
-      label: 'Track',
-      href: '/track',
-    },
-    {
-      label: 'Generate Budget',
-      href: '/generate'
-    }
-  ];
+  
   const variant = useBreakpointValue({
     base: 'mobile',
     lg: 'desktop',
   });
 
   return (
-    <Flex w={'100vw'} h={'100vh'} overflowY={'auto'} overflowX={'hidden'}>
+    <Flex w={'100vw'} h={{base: '100%', lg: '100vh'}}>
       <Flex
         direction={'column'}
         minW={'200px'}
@@ -71,7 +55,6 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ back, add, children }) => {
       </Flex>
       <Flex
         direction={'column'}
-        minH={'10vh'}
         w={'full'}
         bgColor={AppColors.primary}
         overflow={'scroll'}

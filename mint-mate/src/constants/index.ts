@@ -1,47 +1,60 @@
-import { Budget } from '../models/budget';
-import { Base } from '../models/base';
 import { Presets } from '../models/budget';
 
-// 50 to fixed expenses, 30 to variable expenses, 20 to savings
-
-
-//CAN MAYBE ADD A TYPE TO THE BUDGET ITEM FOR THE GENERATION OF BUDGETS??
-//OR CAN MAYBE HAVE PRESET COSTS THAT THE USER SELECTS WHEN ENTERING THEIR BUDGET
-//THOSE PRESETS WILL HAVE A TYPE AND VALUE ATTATCHED TO THEM 
-
-const fixedExpenses: string[] = [ //.5
-  'Rent/Housing', //.25
-  'Insurance',//.075
-  'Utilities',//.05
-  'Bank Fees',//.025
-  'Subscriptions',//.025
-  'Vehicle', //.075
+export const fixedExpenses: Presets[] = [
+  {
+    name: 'Tithe',
+    value: 0.1
+  },
+  {
+    name: 'Rent/Housing',
+    value: 0.25,
+  },
+  {
+    name: 'Insurance',
+    value: 0.06,
+  },
+  {
+    name: 'Utilities',
+    value: 0.035,
+  },
+  {
+    name: 'Bank Fees',
+    value: 0.015,
+  },
+  {
+    name: 'Vehicle',
+    value: 0.04,
+  },
 ];
-const variableExpenses: string[] = [
-  'Groceries',
-  'Data',
-  'Petrol',
-  'Toiletries',
-  'Going out',
-  'Entertainment',
-  'Shopping',
-];
 
-const presetCosts: Presets[] = [
-//   {
-//     name: 'Rent/Housing',
-//     value: 0.2,
-//   },
-//   {
-//     name: 'Vehicle',
-//     value: 0.05,
-//   },
-//   {
-//     name: 'Insurance',
-//     value: 0.05,
-//   },
-//   {
-//     name: 'Utilities',
-//     value: 0.025
-//   },
-];
+export const variableExpenses: Presets[] = [
+  {
+    name: 'Groceries',
+    value: 0.08
+  },
+  {
+    name: 'Cell Phone',
+    value: 0.02
+  },
+  {
+    name: 'Petrol',
+    value: 0.05
+  },
+  {
+    name: 'Toiletries',
+    value: 0.05
+  },
+  {
+    name: 'Going Out',
+    value: 0.04
+  },
+  {
+    name: 'Entertainment',
+    value: 0.03
+  },
+  {
+    name: 'Shopping',
+    value: 0.03
+  }
+]
+

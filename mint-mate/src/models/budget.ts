@@ -15,7 +15,7 @@ export interface Budget extends Base {
   goals?: BudgetGoals;
   incomes: BudgetItem[];
   expenses: BudgetItem[];
-  totalValue: number;
+  value: number;
 }
 export interface BudgetItem extends Base {
   date?: Date | string;
